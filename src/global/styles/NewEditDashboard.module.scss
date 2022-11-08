@@ -1,0 +1,95 @@
+.DashboardForm {
+  display: flex;
+  flex-direction: column;
+
+  padding: 32px 24px;
+
+  img {
+    width: 160px;
+
+    margin-bottom: 32px;
+
+    border-radius: 3px;
+    box-shadow: 2px 1px 1px 1px var(--greyTransparentColor);
+  }
+
+  h2 {
+    font-size: 32px;
+
+    padding-bottom: 32px;
+  }
+
+  label {
+    font-weight: 500;
+    font-size: 16px;
+  }
+
+  input,
+  textarea,
+  select {
+    width: 100%;
+    padding: 8px 4px;
+
+    border: 2px solid var(--greyTransparentColor);
+    border-radius: 3px;
+    box-shadow: 1px 1px 1px var(--greyTransparentColor);
+
+    background: none;
+
+    margin-top: 8px;
+    margin-bottom: 24px;
+
+    outline: none;
+
+    font-size: 16px;
+
+    transition: 200ms ease-in;
+
+    &:focus {
+      border-color: var(--greyColor);
+    }
+  }
+
+  ::placeholder {
+    font-size: 14px;
+  }
+
+  input[type="submit"] {
+    max-width: 340px;
+
+    font-size: 16px;
+    font-weight: 500;
+
+    background: var(--greyColor);
+    color: var(--whiteColor);
+    box-shadow: 3px 3px 3px var(--greyTransparentColor);
+
+    padding: 16px 0;
+
+    cursor: pointer;
+
+    transition: 300ms ease-in;
+
+    &:hover {
+      opacity: 0.75;
+    }
+  }
+
+  .DoubleInput {
+    width: 100%;
+    display: flex;
+
+    div {
+      width: 50%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    div:last-child {
+      margin-left: 8px;
+    }
+    div:first-child {
+      margin-right: 8px;
+    }
+  }
+}

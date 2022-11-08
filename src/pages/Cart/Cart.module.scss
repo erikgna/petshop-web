@@ -1,0 +1,248 @@
+.Cart {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  table {
+    margin-top: 48px;
+
+    th {
+      text-align: start;
+
+      width: 100px;
+
+      &:first-child {
+        width: 330px;
+      }
+    }
+
+    thead {
+      @media screen and (max-width: 775px) {
+        display: none;
+      }
+    }
+    td {
+      display: flex;
+      align-items: flex-start;
+      width: 100px;
+
+      margin-top: 24px;
+      padding-bottom: 24px;
+
+      @media screen and (max-width: 775px) {
+        padding: 0;
+        margin: 0;
+        margin-top: 8px;
+      }
+
+      &:first-child {
+        width: 330px;
+
+        @media screen and (max-width: 775px) {
+          flex-direction: column;
+
+          img {
+            width: 100%;
+
+            margin-top: 24px;
+            margin-bottom: 16px;
+          }
+        }
+      }
+    }
+
+    tr {
+      display: flex;
+
+      @media screen and (max-width: 775px) {
+        flex-direction: column;
+
+        padding-bottom: 24px;
+      }
+    }
+  }
+}
+
+.Item {
+  border-bottom: 1px solid var(--greyColor);
+
+  .Description {
+    display: flex;
+
+    h5 {
+      font-size: 16px;
+    }
+    p {
+      margin-top: 4px;
+      font-size: 14px;
+    }
+    img {
+      width: 120px;
+
+      border-radius: 6px;
+      margin-right: 16px;
+    }
+  }
+
+  .Details {
+    display: flex;
+    flex-direction: column;
+
+    p {
+      margin-bottom: 8px;
+    }
+  }
+
+  .Quantity {
+    display: flex;
+
+    svg {
+      height: 24px;
+      font-size: 24px;
+
+      background: var(--purple);
+      color: white;
+      cursor: pointer;
+    }
+
+    strong {
+      display: flex;
+      align-items: center;
+
+      height: 24px;
+
+      font-size: 16px;
+
+      border: 1px solid var(--purple);
+      padding: 0 8px;
+    }
+  }
+
+  .Remove {
+    @media screen and (max-width: 775px) {
+      display: none;
+    }
+
+    svg {
+      margin-top: -4px;
+      cursor: pointer;
+      font-size: 32px;
+    }
+  }
+  .Value {
+    font-weight: 500;
+    font-size: 16px;
+
+    @media screen and (max-width: 775px) {
+      padding-top: 8px;
+      font-size: 20px;
+    }
+  }
+}
+
+.AmountInformations {
+  display: flex;
+  align-items: center;
+
+  margin-top: 48px;
+
+  @media screen and (max-width: 715px) {
+    display: grid;
+    grid-template-columns: 50vw 50vw;
+    row-gap: 16px;
+    justify-items: center;
+  }
+
+  div {
+    width: 160px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid var(--greyColor);
+    border-radius: 3px;
+
+    padding: 24px 0;
+
+    p {
+      margin-right: 24px;
+    }
+
+    &:not(:last-child) {
+      margin-right: 16px;
+
+      @media screen and (max-width: 715px) {
+        margin-right: 0;
+      }
+    }
+  }
+}
+
+.Actions {
+  display: flex;
+
+  margin-top: 32px;
+
+  @media screen and (max-width: 630px) {
+    flex-direction: column;
+  }
+
+  .Discount {
+    display: flex;
+    flex-direction: column;
+
+    @media screen and (max-width: 630px) {
+      width: 300px;
+
+      div {
+        flex-direction: column;
+        align-items: flex-start;
+
+        input,
+        button {
+          width: 100%;
+        }
+        input {
+          border-bottom: none;
+          border-right: 1px solid var(--greyColor);
+        }
+      }
+    }
+
+    div {
+      display: flex;
+      align-items: center;
+
+      margin-top: 8px;
+    }
+    button {
+      border-radius: 0;
+    }
+    input {
+      border: 1px solid var(--greyColor);
+      border-right: none;
+
+      padding: 0 8px;
+
+      height: 35px;
+    }
+  }
+
+  .Buttons {
+    display: flex;
+    flex-direction: column;
+
+    margin-top: 27px;
+    margin-left: 24px;
+
+    @media screen and (max-width: 630px) {
+      margin: 0;
+      margin-top: 64px;
+    }
+
+    button:last-child {
+      margin-top: 8px;
+    }
+  }
+}

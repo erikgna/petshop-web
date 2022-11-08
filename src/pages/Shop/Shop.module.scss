@@ -1,0 +1,237 @@
+.SearchBar {
+  margin-bottom: 64px;
+
+  width: 100%;
+  display: flex;
+  align-items: center;
+
+  border: 2px solid var(--purple);
+  border-radius: 24px;
+
+  padding-left: 8px;
+
+  input {
+    width: calc(100% - 32px);
+
+    border: none;
+    background: none;
+    padding: 8px 0;
+
+    outline: none;
+
+    font-size: 16px;
+  }
+
+  svg {
+    font-size: 24px;
+  }
+}
+
+.Center {
+  display: flex;
+  flex-direction: column;
+
+  align-items: flex-end;
+
+  padding: 96px 24px 48px 24px;
+}
+
+.Shop {
+  width: 100%;
+  display: flex;
+
+  .Categories {
+    display: flex;
+    flex-direction: column;
+
+    min-width: 200px;
+
+    ul {
+      list-style: none;
+
+      &:not(:first-child) {
+        margin-top: 24px;
+      }
+    }
+
+    .Title {
+      font-weight: 600;
+      text-transform: capitalize;
+
+      margin-bottom: 16px;
+    }
+
+    .Subtitle {
+      margin-bottom: 8px;
+      color: var(--greyColor);
+
+      &::first-letter {
+        text-transform: uppercase;
+      }
+
+      cursor: pointer;
+
+      &:hover {
+        font-weight: 500;
+        color: #000;
+      }
+    }
+  }
+
+  .Products {
+    display: flex;
+    flex-wrap: wrap;
+
+    a {
+      text-decoration: none;
+    }
+  }
+
+  .FullProduct {
+    width: 300px;
+    height: 400px;
+
+    margin-bottom: 48px;
+    margin-left: 24px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+
+    background-size: cover;
+    background-position: center;
+
+    cursor: pointer;
+
+    border-radius: 6px;
+
+    &:hover {
+      .OverDesc {
+        display: block;
+      }
+      .NormalDesc {
+        display: none;
+      }
+    }
+
+    .OverDesc {
+      display: none;
+
+      height: 100%;
+      width: 100%;
+
+      border-radius: 6px;
+      padding: 16px;
+
+      background: rgba(0, 0, 0, 0.75);
+
+      blockquote {
+        line-height: 1.45;
+
+        color: var(--whiteColor);
+      }
+    }
+
+    .NormalDesc {
+      padding-bottom: 16px;
+      padding-left: 16px;
+
+      h4 {
+        font-size: 20px;
+      }
+      p {
+        margin-top: 4px;
+        margin-bottom: 16px;
+      }
+      strong {
+        font-size: 20px;
+      }
+    }
+
+    h4,
+    p,
+    strong {
+      color: var(--whiteColor);
+    }
+  }
+}
+
+.Product {
+  width: 300px;
+  margin-left: 24px;
+  margin-bottom: 48px;
+
+  cursor: pointer;
+
+  .ProductImage {
+    background-position: center;
+    background-size: cover;
+
+    height: 200px;
+    margin-bottom: 16px;
+
+    border-radius: 6px;
+
+    &:hover {
+      .OverDesc {
+        height: 100%;
+        width: 100%;
+
+        padding: 16px;
+        border-radius: 6px;
+        display: flex;
+
+        background: rgba(0, 0, 0, 0.75);
+
+        blockquote {
+          color: var(--whiteColor);
+        }
+      }
+    }
+
+    .OverDesc {
+      display: none;
+    }
+  }
+
+  h4 {
+    font-size: 20px;
+  }
+  p {
+    margin-top: 4px;
+    margin-bottom: 16px;
+  }
+  strong {
+    font-size: 20px;
+  }
+}
+
+.Navigation {
+  margin-top: 48px;
+
+  width: calc(100vw - 248px);
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  p {
+    display: flex;
+    align-items: center;
+
+    font-weight: 500;
+
+    cursor: pointer;
+
+    svg {
+      font-size: 24px;
+
+      &:first-child {
+        margin-right: 8px;
+      }
+      &:last-child {
+        margin-left: 8px;
+      }
+    }
+  }
+}

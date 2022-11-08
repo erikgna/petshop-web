@@ -1,0 +1,128 @@
+.Product {
+  display: flex;
+  flex-direction: column;
+
+  .FirstInfo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin-bottom: 64px;
+
+    @media screen and (max-width: 1070px) {
+      flex-direction: column;
+    }
+
+    .Image {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+
+      .Actions {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        height: 100%;
+        position: absolute;
+        padding: 0 16px;
+
+        background: rgba(0, 0, 0, 0.5);
+
+        p {
+          font-weight: 500;
+          color: var(--whiteColor);
+
+          margin-top: 0;
+          margin-bottom: 24px;
+        }
+        svg {
+          font-size: 24px;
+          cursor: pointer;
+
+          &:first-child {
+            margin-bottom: 24px;
+          }
+        }
+      }
+    }
+
+    img {
+      width: 100%;
+      border-radius: 6px;
+    }
+
+    h1 {
+      font-size: 32px;
+    }
+    p {
+      margin-top: 8px;
+      margin-bottom: 32px;
+    }
+
+    .Infos {
+      margin-left: 32px;
+
+      display: flex;
+      flex-direction: column;
+
+      @media screen and (max-width: 1070px) {
+        margin-left: 0;
+        margin-top: 40px;
+      }
+
+      strong {
+        font-size: 20px;
+
+        margin-bottom: 24px;
+      }
+      div {
+        display: flex;
+        flex-direction: column;
+
+        label {
+          font-weight: 600;
+          margin-bottom: 8px;
+          margin-top: 8px;
+
+          &::first-letter {
+            text-transform: uppercase;
+          }
+        }
+      }
+
+      select {
+        border: none;
+        background: var(--purple);
+        color: var(--whiteColor);
+
+        font-weight: 500;
+        font-size: 16px;
+        border-radius: 3px;
+
+        padding: 8px;
+        margin-bottom: 8px;
+
+        width: 300px;
+
+        opacity: 0.75;
+
+        option {
+          color: var(--whiteColor);
+          font-weight: 500;
+          font-size: 14px;
+        }
+      }
+      button {
+        margin-top: 24px;
+      }
+    }
+  }
+}
+p:last-child {
+  line-height: 1.45;
+
+  margin-top: 16px;
+  margin-bottom: 48px;
+}

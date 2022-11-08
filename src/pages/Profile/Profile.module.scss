@@ -1,0 +1,197 @@
+.Profile {
+  display: flex;
+
+  div:last-child {
+    display: flex;
+    flex-direction: column;
+
+    width: 100%;
+
+    h2 {
+      margin-bottom: 24px;
+    }
+    h3 {
+      margin-bottom: 16px;
+    }
+
+    button {
+      margin-bottom: 32px;
+    }
+
+    p {
+      margin-top: 32px;
+      margin-bottom: 16px;
+      line-height: 1.35;
+    }
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+
+    label {
+      font-size: 16px;
+      font-weight: 500;
+
+      margin-bottom: 8px;
+    }
+    input {
+      outline: none;
+      font-size: 16px;
+
+      padding: 8px;
+      border-radius: 3px;
+      border: 1px solid var(--greyColor);
+
+      margin-bottom: 24px;
+    }
+
+    div {
+      width: 100%;
+
+      display: flex;
+
+      @media screen and (max-width: 500px) {
+        flex-direction: column;
+      }
+
+      div {
+        display: flex;
+        flex-direction: column;
+
+        &:last-child {
+          margin-left: 16px;
+
+          @media screen and (max-width: 500px) {
+            margin-left: 0;
+          }
+        }
+      }
+    }
+  }
+
+  .Menu {
+    min-width: 200px;
+    padding-right: 40px;
+    display: flex;
+    flex-direction: column;
+
+    @media screen and (max-width: 675px) {
+      bottom: 0;
+      left: 0;
+      width: 100vw;
+      padding: 0 8px;
+      flex-direction: row;
+      position: fixed;
+      background: rgb(255, 239, 255);
+      justify-content: space-between;
+    }
+
+    p {
+      font-weight: 600;
+
+      color: var(--purple);
+      background: rgb(255, 239, 255);
+
+      border-radius: 3px;
+
+      padding: 8px 12px;
+      margin: 4px 0;
+
+      cursor: pointer;
+
+      @media screen and (max-width: 675px) {
+        padding: 16px 0;
+        margin: 0;
+        font-size: 14px;
+        font-weight: 500;
+        background: none;
+      }
+    }
+  }
+}
+
+.Orders {
+  h2 {
+    margin-bottom: 24px;
+  }
+
+  strong {
+    display: none;
+  }
+
+  @media screen and (max-width: 940px) {
+    strong {
+      display: inline;
+    }
+    table {
+      display: flex;
+      flex-direction: column;
+      thead {
+        display: none;
+      }
+      tr {
+        display: flex;
+        flex-direction: column;
+
+        border: 1px solid var(--greyColor);
+        border-radius: 3px;
+
+        margin-bottom: 16px;
+        padding: 16px;
+      }
+    }
+  }
+
+  th {
+    padding-bottom: 4px;
+    border-bottom: 1px solid var(--greyColor);
+  }
+  th,
+  td {
+    text-align: start;
+    padding-right: 24px;
+  }
+  td {
+    padding-top: 8px;
+  }
+
+  .Complete {
+    color: green;
+    font-weight: 600;
+  }
+}
+
+.Cards {
+  display: flex;
+  flex-direction: column;
+
+  padding-top: 64px;
+
+  .Card {
+    width: 300px;
+    max-width: 300px;
+    height: 160px;
+
+    padding: 16px 8px;
+
+    border-radius: 6px;
+    background: rgb(113, 62, 221);
+    background: linear-gradient(
+      90deg,
+      rgba(113, 62, 221, 1) 0%,
+      rgba(177, 172, 254, 1) 100%
+    );
+
+    h3,
+    h2,
+    h1 {
+      color: var(--whiteColor);
+    }
+
+    h3 {
+      margin-top: 8px;
+      margin-bottom: 24px;
+    }
+  }
+}

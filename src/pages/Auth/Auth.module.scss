@@ -1,0 +1,150 @@
+.AuthSec {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding-left: 24px;
+
+  @media screen and (max-width: 880px) {
+    justify-content: center;
+
+    padding-right: 24px;
+  }
+}
+
+.Content {
+  display: flex;
+  flex-direction: column;
+
+  a {
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  h2 {
+    font-size: 32px;
+
+    margin-bottom: 16px;
+  }
+
+  .GoogleSign {
+    width: 224px;
+
+    padding: 8px 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    align-self: center;
+
+    font-weight: 600;
+    font-size: 16px;
+
+    background: none;
+    border: 1px solid var(--greyColor);
+    border-radius: 50px;
+
+    cursor: pointer;
+
+    margin-bottom: 32px;
+    margin-top: 16px;
+
+    svg {
+      font-size: 24px;
+      margin-right: 8px;
+    }
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+
+    label {
+      margin-bottom: 8px;
+
+      font-weight: 500;
+      font-size: 16px;
+    }
+    input[type="email"],
+    input[type="password"],
+    input[type="text"] {
+      font-size: 16px;
+      padding: 8px;
+
+      border-radius: 3px;
+      border: 1px solid var(--greyColor);
+
+      outline: none;
+
+      margin-bottom: 24px;
+    }
+
+    .Utils {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+
+      div {
+        display: flex;
+        align-items: flex-start;
+
+        p {
+          font-weight: 500;
+
+          margin-left: 8px;
+        }
+      }
+    }
+
+    button {
+      margin-top: 32px;
+      margin-bottom: 16px;
+    }
+  }
+}
+
+.Separator {
+  display: flex;
+  align-items: center;
+
+  margin: 16px 0;
+
+  color: var(--greyTransparentColor);
+
+  div {
+    width: 80px;
+    height: 1px;
+
+    border-radius: 3px;
+
+    background: rgba(0, 0, 0, 0.3);
+
+    &:first-child {
+      margin-right: 16px;
+    }
+    &:last-child {
+      margin-left: 16px;
+    }
+  }
+}
+
+.Image {
+  height: 100vh;
+  width: 50vw;
+  max-width: 750px;
+
+  border-bottom-left-radius: 6px;
+  border-top-left-radius: 6px;
+
+  margin-left: 24px;
+
+  background: red;
+
+  @media screen and (max-width: 880px) {
+    display: none;
+  }
+}
+
+strong {
+  cursor: pointer;
+}

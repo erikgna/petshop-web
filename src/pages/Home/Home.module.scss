@@ -1,0 +1,372 @@
+.Home {
+  font-size: 24px;
+}
+
+.Banners {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.BannerLetter {
+  width: 100vw;
+
+  padding: 32px 24px;
+
+  display: flex;
+  flex-direction: column;
+
+  background: url(../../../assets/images/home_banner.jpg);
+  background-size: cover;
+  background-position: top;
+
+  h2 {
+    font-size: 40px;
+  }
+
+  p {
+    margin-top: 24px;
+    margin-bottom: 16px;
+  }
+
+  button {
+    max-width: 160px;
+  }
+}
+
+.Categories {
+  display: flex;
+  flex-direction: column;
+
+  margin-top: 128px;
+  margin-bottom: 48px;
+
+  h3 {
+    padding-left: 24px;
+    padding-bottom: 32px;
+  }
+}
+
+.Slider {
+  position: relative;
+  display: flex;
+  justify-content: center;
+
+  svg {
+    position: absolute;
+    top: 40%;
+
+    cursor: pointer;
+
+    background: var(--whiteColor);
+    border-radius: 50%;
+  }
+
+  .NextButton {
+    margin-right: 16px;
+    right: 0;
+  }
+  .PreviousButton {
+    margin-left: 16px;
+    left: 0;
+  }
+}
+
+.CategoryItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  padding: 0 16px;
+
+  div {
+    width: 296px;
+    height: 360px;
+
+    background: red;
+
+    margin-bottom: 16px;
+  }
+}
+
+.BestSeller {
+  margin-top: 128px;
+
+  display: flex;
+  justify-content: space-between;
+
+  padding: 0 24px;
+
+  @media screen and (max-width: 960px) {
+    flex-direction: column;
+  }
+
+  .BannerSeller {
+    width: calc(45vw - 48px);
+
+    display: flex;
+    flex-direction: column;
+
+    margin-right: 24px;
+
+    @media screen and (max-width: 960px) {
+      width: 100%;
+
+      margin-bottom: 48px;
+    }
+
+    h3 {
+      margin-top: 16px;
+      margin-bottom: 12px;
+
+      font-size: 32px;
+      line-height: 1.35;
+    }
+
+    a {
+      width: 96px;
+
+      display: flex;
+      align-items: center;
+
+      font-size: 16px;
+      color: var(--purple);
+
+      svg {
+        margin-left: 4px;
+      }
+    }
+  }
+
+  .Products {
+    width: calc(55vw - 48px);
+    max-width: 1000px;
+
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 16px;
+    row-gap: 24px;
+
+    margin-top: 16px;
+    margin-bottom: 24px;
+
+    @media screen and (max-width: 960px) {
+      width: 100%;
+    }
+
+    @media screen and (max-width: 460px) {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .ProductCard {
+      display: flex;
+      flex-direction: column;
+
+      border: 1px solid var(--greyColor);
+      border-radius: 3px;
+      box-shadow: 2px 1px 1px 1px var(--greyTransparentColor);
+
+      padding: 24px 16px;
+
+      .ProductImage {
+        align-self: center;
+
+        width: 128px;
+        height: 128px;
+      }
+
+      h6 {
+        font-size: 18px;
+
+        margin-top: 16px;
+        margin-bottom: 8px;
+      }
+      p {
+        font-size: 16px;
+        font-weight: 500;
+
+        color: var(--purple);
+      }
+
+      .Buttons {
+        margin-top: 16px;
+
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        .Cart {
+          padding: 4px 16px;
+          background: var(--purple);
+
+          cursor: pointer;
+        }
+
+        div {
+          display: flex;
+          align-items: center;
+
+          svg {
+            height: 24px;
+            font-size: 24px;
+
+            background: var(--purple);
+            color: white;
+            cursor: pointer;
+          }
+
+          strong {
+            display: flex;
+            align-items: center;
+
+            height: 24px;
+
+            font-size: 16px;
+
+            border: 1px solid var(--purple);
+            padding: 0 8px;
+          }
+        }
+      }
+    }
+
+    button {
+      width: 200px;
+    }
+  }
+}
+
+.NewsForm {
+  margin-top: 128px;
+
+  padding: 0 24px;
+
+  display: flex;
+  justify-content: space-between;
+
+  @media screen and (max-width: 960px) {
+    flex-direction: column;
+  }
+
+  .News {
+    width: calc(50vw - 48px);
+
+    display: flex;
+    flex-direction: column;
+
+    @media screen and (max-width: 960px) {
+      width: 100%;
+    }
+
+    section {
+      display: flex;
+
+      @media screen and (max-width: 460px) {
+        display: flex;
+        flex-direction: column;
+
+        margin-bottom: 16px;
+      }
+
+      div {
+        padding: 16px;
+        border-radius: 3px;
+
+        box-shadow: 2px 1px 1px 1px var(--greyTransparentColor);
+        background: rgb(245, 245, 245);
+
+        h6 {
+          font-size: 20px;
+        }
+        p {
+          margin-top: 8px;
+          margin-bottom: 16px;
+
+          font-size: 14px;
+          line-height: 1.35;
+        }
+        strong {
+          font-size: 14px;
+        }
+      }
+
+      .Purple {
+        background: var(--purple);
+
+        h6,
+        p,
+        strong {
+          color: var(--whiteColor);
+        }
+
+        &:first-child {
+          margin-bottom: 16px;
+          margin-right: 16px;
+
+          @media screen and (max-width: 460px) {
+            margin-right: 0px;
+          }
+        }
+        &:last-child {
+          margin-top: 16px;
+          margin-left: 16px;
+
+          @media screen and (max-width: 460px) {
+            margin-left: 0px;
+          }
+        }
+      }
+    }
+  }
+
+  form {
+    width: calc(50vw - 48px);
+
+    display: flex;
+    flex-direction: column;
+
+    padding-left: 24px;
+
+    @media screen and (max-width: 960px) {
+      margin-top: 48px;
+
+      width: 100%;
+    }
+
+    h6 {
+      margin-bottom: 16px;
+    }
+
+    input,
+    textarea {
+      outline: none;
+
+      font-size: 16px;
+
+      padding: 8px;
+      margin-bottom: 16px;
+      box-shadow: 2px 1px 1px 1px var(--greyTransparentColor);
+      border-radius: 3px;
+      border: 1px solid var(--purple);
+    }
+  }
+}
+.Marcas {
+  margin-top: 128px;
+  margin-bottom: 128px;
+
+  h3 {
+    margin-left: 24px;
+    margin-bottom: 24px;
+  }
+
+  .MarcaItem {
+    width: 96px;
+    height: 64px;
+
+    margin: 0 24px;
+
+    cursor: pointer;
+  }
+}
