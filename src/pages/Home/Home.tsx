@@ -2,16 +2,23 @@ import { useEffect, useState } from 'react';
 import { AiOutlineArrowLeft, AiOutlineArrowRight, AiOutlinePlus, AiOutlineMinus } from 'react-icons/ai'
 import { IoIosArrowForward } from 'react-icons/io'
 import { BsFillCartFill } from 'react-icons/bs'
+import { Link } from 'react-router-dom';
+
+import { useProduto } from '../../hooks/useProduto';
 
 import styles from './Home.module.scss'
-import { Link } from 'react-router-dom';
 
 import catChow from '../../../assets/images/cat_chow.webp'
 import dogChow from '../../../assets/images/dog_chow.webp'
 import goldenPremier from '../../../assets/images/golden_premier.jpg'
 import pedigree from '../../../assets/images/pedigree.png'
 import whiskas from '../../../assets/images/whiskas.jpg'
-import { useProduto } from '../../hooks/useProduto';
+
+import dog from '../../../assets/images/dog.jpg'
+import cat from '../../../assets/images/cat.jpg'
+import smallPet from '../../../assets/images/smallpet.jpg'
+import bigPet from '../../../assets/images/bigpet.jpg'
+import healthCare from '../../../assets/images/healthcare.jpg'
 
 const marcas = [
   catChow,
@@ -22,11 +29,26 @@ const marcas = [
 ]
 
 const categories = [
-  'Dog',
-  'Cat',
-  'Small Pet',
-  'Healthcare',
-  'Big Pet'
+  {
+    name: 'Dog',
+    image: dog
+  },
+  {
+    name: 'Cat',
+    image: cat
+  },
+  {
+    name: 'Small Pet',
+    image: smallPet
+  },
+  {
+    name: 'Big Pet',
+    image: bigPet
+  },
+  {
+    name: 'Healthcare',
+    image: healthCare
+  },
 ]
 
 export const Home = () => {
@@ -82,10 +104,10 @@ export const Home = () => {
             if ((index + 1) < max && (index + 1) >= min) {
               return <div
                 className={styles.CategoryItem}
-                key={item}
+                key={item.name}
               >
-                <div className="img"></div>
-                <h4>{item}</h4>
+                <img src={item.image} />
+                <h4>{item.name}</h4>
               </div>
             }
             else {

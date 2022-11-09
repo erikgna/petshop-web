@@ -12,7 +12,7 @@ import { ICliente } from "../interfaces/cliente";
 import { IAnimal } from "../interfaces/animal";
 
 const api: AxiosInstance = axios.create({
-  baseURL: "http://localhost:8000/api/v1",
+  baseURL: "http://localhost:8030/api/v1",
 });
 
 export const APIGet = (route: string) => api.get(`${route}`);

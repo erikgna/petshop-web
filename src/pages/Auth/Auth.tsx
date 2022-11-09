@@ -1,11 +1,14 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { FcGoogle } from 'react-icons/fc'
 
 import styles from './Auth.module.scss'
+import { AuthContext } from '../../contexts/Auth'
 
 export const Auth = () => {
     const [isLogin, setIsLogin] = useState<boolean>(true)
+
+    const { signIn } = useContext(AuthContext)
 
     return (
         <section className={styles.AuthSec}>
@@ -37,7 +40,10 @@ export const Auth = () => {
                         </div>
                         {isLogin && <Link to='/forgot-password'>Forgot password?</Link>}
                     </div>
-                    <button className='ButtonPrimary'>{isLogin ? 'Login' : 'Register'}</button>
+                    <button className='ButtonPrimary' onClick={(e) => {
+                        e.preventDefault()
+                        signIn('', '')
+                    }}>{isLogin ? 'Login' : 'Register'}</button>
                 </form>
                 {isLogin ? <p>Not registred yet? <strong onClick={() => setIsLogin(false)}>Create an Account</strong></p> :
                     <p>Already has an account? <strong onClick={() => setIsLogin(true)}>Login with Account</strong></p>}

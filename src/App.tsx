@@ -43,6 +43,7 @@ import { Auth } from "./pages/Auth/Auth";
 import { Cart } from "./pages/Cart/Cart";
 import { Profile } from "./pages/Profile/Profile";
 import { Checkout } from "./pages/Checkout/Checkout";
+import { AuthContextCmpnt } from "./contexts/Auth";
 
 function App() {
 
@@ -90,26 +91,28 @@ function App() {
 
   return (
     <BrowserRouter>
-      <section>
-        <div>
-          <div className="teste">
-            <Navbar />
-            <div className="center">
-              <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/blog" element={<Blog />} />
-                <Route path="/post/:id" element={<Post />} />
-                <Route path="/shop" element={<Shop />} />
-                <Route path="/product/:id" element={<Product />} />
-                <Route path="/auth" element={<Auth />} />
-                <Route path="/cart" element={<Cart />} />
-                <Route path="/profile" element={<Profile />} />
-                <Route path="/checkout" element={<Checkout />} />
-              </Routes>
+      <AuthContextCmpnt>
+        <section>
+          <div>
+            <div className="teste">
+              <Navbar />
+              <div className="center">
+                <Routes>
+                  <Route path="/" element={<Home />} />
+                  <Route path="/blog" element={<Blog />} />
+                  <Route path="/post/:id" element={<Post />} />
+                  <Route path="/shop" element={<Shop />} />
+                  <Route path="/product/:id" element={<Product />} />
+                  <Route path="/auth" element={<Auth />} />
+                  <Route path="/cart" element={<Cart />} />
+                  <Route path="/profile" element={<Profile />} />
+                  <Route path="/checkout" element={<Checkout />} />
+                </Routes>
+              </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </AuthContextCmpnt>
     </BrowserRouter>
   )
 }

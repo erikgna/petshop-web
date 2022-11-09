@@ -75,6 +75,8 @@ strong {
   align-items: center;
 
   overflow-x: hidden;
+
+  padding: 0 16px;
 }
 .center {
   width: 100%;
