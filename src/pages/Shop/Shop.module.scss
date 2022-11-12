@@ -23,6 +23,7 @@
   }
 
   svg {
+    cursor: pointer;
     font-size: 24px;
   }
 }
@@ -48,6 +49,10 @@
 
     ul {
       list-style: none;
+
+      li {
+        cursor: pointer;
+      }
 
       &:not(:first-child) {
         margin-top: 24px;

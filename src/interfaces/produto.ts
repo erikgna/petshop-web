@@ -1,13 +1,17 @@
-export interface IProduto {
+export interface ISimpleProduto {
   idproduto?: string;
-  idcategoriaproduto?: string;
   nome: string;
   foto?: string;
   descricao: string;
   valor: number;
-  quantidade: number;
-  datareposicao?: Date | string;
   categoriaproduto?: {
     nome: string;
   };
+}
+
+export interface IProduto extends ISimpleProduto {
+  idcategoriaproduto?: string;
+  quantidade: number;
+  datareposicao?: Date | string;
+  options: { nome: string; value: string[] }[];
 }

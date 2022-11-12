@@ -1,29 +1,31 @@
+import { IAddress } from "./address";
+import { ICliente } from "./cliente";
+
 export interface INotaVenda {
-  idnotavenda?: string;
-  idservico?: string;
-  idproduto?: string;
-  idcliente?: string;
-  idfuncionario?: string;
-  valor: number;
+  idnotavenda: string;
+  idcliente: string;
+  idBillingAddress: string;
+  idShippingAddress: string;
+  produtos: {
+    id: string;
+    total: number;
+    quantity: number;
+    name: string;
+    options: any;
+    photo: string;
+  }[];
+  total: number;
+  subtotal: number;
+  discount: number;
+  delivery: number;
   quantidade: number;
-  data?: Date | string;
-  servico?: {
-    nome: string;
-  };
-  produto?: {
-    nome: string;
-  };
-  cliente?: {
-    nome: string;
-  };
-  funcionario?: {
-    nome: string;
-  };
+  paymentmethod: string;
+  deliverystatus: number;
+  data: Date;
 }
 
-export interface INotaVendaInfo {
-  quantidade_servicos: number;
-  valor_total: number;
-  nome: string;
-  data?: string;
+export interface INotaVendaUser extends INotaVenda {
+  billingAddress: IAddress;
+  shippingAddress: IAddress;
+  cliente: ICliente;
 }

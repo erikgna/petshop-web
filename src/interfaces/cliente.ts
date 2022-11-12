@@ -1,7 +1,8 @@
 export interface ICliente {
   idcliente?: string;
-  cpf: string;
-  nome: string;
-  endereco: string;
-  telefone: string;
+  firstname: string;
+  lastname: string;
+  email: string;
+  telefone?: string;
+  birth?: Date;
 }

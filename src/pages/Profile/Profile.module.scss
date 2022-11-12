@@ -120,6 +120,10 @@
     display: none;
   }
 
+  tr {
+    cursor: pointer;
+  }
+
   @media screen and (max-width: 940px) {
     strong {
       display: inline;

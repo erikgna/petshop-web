@@ -4,17 +4,13 @@ import { useParams } from 'react-router'
 import { useNotaVenda } from '../../hooks/useNotaVenda'
 import { useCliente } from '../../hooks/useCliente'
 import { useProduto } from '../../hooks/useProduto'
-import { useFuncionario } from '../../hooks/useFuncionario'
-import { useServico } from '../../hooks/useServico'
 
 import styles from '../../global/styles/NewEditDashboard.module.scss'
 
 export const NotaVendaDashboard = () => {
     const notaVendaHook = useNotaVenda()
     const clienteHook = useCliente()
-    const funcionarioHook = useFuncionario()
     const produtoHook = useProduto()
-    const servicoHook = useServico()
     const { id } = useParams();
 
     useEffect(() => {
@@ -23,8 +19,6 @@ export const NotaVendaDashboard = () => {
         }
         clienteHook.get()
         produtoHook.get()
-        servicoHook.get()
-        funcionarioHook.get()
     }, [])
 
     if (notaVendaHook.isLoading) {
@@ -42,16 +36,6 @@ export const NotaVendaDashboard = () => {
                             {produtoHook.produtos.map((produto) => {
                                 if (produto.idproduto === notaVendaHook.notaVendaInput.idproduto) return <option selected key={produto.idproduto} value={produto.idproduto}>{produto.nome}</option>
                                 return <option value={produto.idproduto} key={produto.idproduto}>{produto.nome}</option>
-                            })}
-                        </select>
-                    </div>
-                    <div>
-                        <label htmlFor="servico">Escolha o servico</label>
-                        <select name="servico" id="servico" onChange={(e) => notaVendaHook.setNotaVendaInput({ ...notaVendaHook.notaVendaInput, idservico: e.target.value })}>
-                            {notaVendaHook.notaVendaInput.idservico === undefined && <option value="null" defaultValue="">Escolha uma opção</option>}
-                            {servicoHook.servicos.map((servico) => {
-                                if (servico.idservico === notaVendaHook.notaVendaInput.idservico) return <option selected key={servico.idservico} value={servico.idservico}>{servico.nome}</option>
-                                return <option value={servico.idservico} key={servico.idservico}>{servico.nome}</option>
                             })}
                         </select>
                     </div>
@@ -82,31 +66,6 @@ export const NotaVendaDashboard = () => {
                             onChange={(e) => notaVendaHook.setNotaVendaInput({ ...notaVendaHook.notaVendaInput, quantidade: e.target.value as unknown as number })}
                         />
                     </div>
-                </div>
-
-                <div className={styles.DoubleInput}>
-                    <div>
-                        <label htmlFor="cliente">Escolha o cliente</label>
-                        <select name="cliente" id="cliente" onChange={(e) => notaVendaHook.setNotaVendaInput({ ...notaVendaHook.notaVendaInput, idcliente: e.target.value })}>
-                            {notaVendaHook.notaVendaInput.idcliente === undefined && <option value="null" defaultValue="">Escolha uma opção</option>}
-                            {clienteHook.clientes.map((cliente) => {
-                                if (cliente.idcliente === notaVendaHook.notaVendaInput.idcliente) return <option selected key={cliente.idcliente} value={cliente.idcliente}>{cliente.nome}</option>
-                                return <option value={cliente.idcliente} key={cliente.idcliente}>{cliente.nome}</option>
-                            })}
-                        </select>
-                    </div>
-
-                    <div>
-                        <label htmlFor="funcionario">Escolha o funcionário</label>
-                        <select name="funcionario" id="funcionario" onChange={(e) => notaVendaHook.setNotaVendaInput({ ...notaVendaHook.notaVendaInput, idfuncionario: e.target.value })}>
-                            {notaVendaHook.notaVendaInput.idfuncionario === undefined && <option value="null" defaultValue="">Escolha uma opção</option>}
-                            {funcionarioHook.funcionarios.map((funcionario) => {
-                                if (funcionario.idfuncionario === notaVendaHook.notaVendaInput.idfuncionario) return <option selected key={funcionario.idfuncionario} value={funcionario.idfuncionario}>{funcionario.nome}</option>
-                                return <option value={funcionario.idfuncionario} key={funcionario.idfuncionario}>{funcionario.nome}</option>
-                            })}
-                        </select>
-                    </div>
-
                 </div>
 
                 <label htmlFor="data">Data</label>

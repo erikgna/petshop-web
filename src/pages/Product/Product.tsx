@@ -1,32 +1,25 @@
-import React, { useEffect } from 'react'
+import { useQuery } from '@tanstack/react-query'
 import { SlArrowUp, SlArrowDown } from 'react-icons/sl'
 import { useParams } from 'react-router'
-import { useProduto } from '../../hooks/useProduto'
+
+import { APIGetOne } from '../../api'
+import { Loading } from '../../components/Loading/Loading'
+import { IProduto } from '../../interfaces/produto'
 
 import styles from './Product.module.scss'
 
-const options = {
-    color: [
-        'Red',
-        'Blue',
-        'Green'
-    ],
-    size: [
-        'P',
-        'M',
-        'G',
-        'GG'
-    ]
-}
-
 export const Product = () => {
     const { id } = useParams();
-    const produtoHook = useProduto()
 
-    useEffect(() => {
-        produtoHook.getOne(id)
-    }, [])
+    const { data, isLoading } = useQuery({
+        queryKey: ['product'], queryFn: () => APIGetOne(id as string, '/produto')
+    })
 
+    if (isLoading) {
+        return <Loading />
+    }
+
+    const product = data?.data as IProduto
     return (
         <section className={styles.Product}>
             <div className={styles.FirstInfo}>
@@ -38,20 +31,20 @@ export const Product = () => {
                         <p>05</p>
                         <SlArrowDown />
                     </div>
-                    <img src="https://miro.medium.com/max/720/1*1AktzTtx2ZOH1kb8yv7Piw.jpeg" alt="" />
+                    <img src={product.foto} alt="Error" />
                 </div>
                 <div className={styles.Infos}>
-                    <h1>{produtoHook.produtoInput.nome}</h1>
-                    <p>{produtoHook.produtoInput.categoriaproduto && 'No Category'}</p>
-                    <strong>${produtoHook.produtoInput.valor}</strong>
+                    <h1>{product.nome}</h1>
+                    <p>{product.categoriaproduto?.nome}</p>
+                    <strong>${product.valor}</strong>
                     {
-                        Object.entries(options).map((item) => {
-                            return <div>
-                                <label htmlFor={item[0]}>{item[0]}</label>
-                                <select key={item[0]} name={item[0]}>
+                        product.options.map((option) => {
+                            return <div key={option.nome}>
+                                <label htmlFor={option.nome}>{option.nome}</label>
+                                <select name={option.nome}>
                                     <option value="null" hidden>Select one</option>
-                                    {item[1].map((option) => (
-                                        <option value={option} key={option}>{option}</option>
+                                    {option.value.map((value) => (
+                                        <option value={value} key={value}>{value}</option>
                                     ))}
                                 </select>
                             </div>
@@ -61,9 +54,7 @@ export const Product = () => {
                 </div>
             </div>
             <h2>Description</h2>
-            <p>
-                {produtoHook.produtoInput.descricao}
-            </p>
+            <p>{product.descricao}</p>
         </section>
     )
 }

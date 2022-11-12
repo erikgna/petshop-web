@@ -1,52 +1,85 @@
-import React, { useEffect } from 'react'
+import { useQuery } from '@tanstack/react-query'
+import { useState } from 'react'
 import { FiArrowLeft, FiArrowRight, FiSearch } from 'react-icons/fi'
 import { Link } from 'react-router-dom'
-import { useProduto } from '../../hooks/useProduto'
+
+import { APIGet, APIGetCategory, APIGetPagination, APIGetSearch } from '../../api'
+import { Loading } from '../../components/Loading/Loading'
+import { ICategoriaProduto } from '../../interfaces/categoriaProduto'
+import { ISimpleProduto } from '../../interfaces/produto'
 
 import styles from './Shop.module.scss'
 
-const categories = {
-    categories: [
-        'rain jackets',
-        'insulated',
-        'fleece',
-        '3 in 1 intercharge',
-        'shell e softsheel',
-    ],
-    specie: [
-        'dog',
-        'cat',
-        'bird'
-    ]
-}
+const categoryUrl = '/produto/category'
+const searchUrl = '/produto/search'
+const baseUrl = '/produto/page'
+const categoriesUrl = '/categoria-produto'
 
 export const Shop = () => {
-    const produtoHook = useProduto()
+    const [page, setPage] = useState<number>(1)
+    const [searchText, setSearchText] = useState<string>('')
+    const [searchResult, setSearchResult] = useState<ISimpleProduto[] | null>(null)
+    const [selectCategory, setSelectCategory] = useState<string>('')
+    const [loading, setLoading] = useState<boolean>(false)
 
-    useEffect(() => {
-        produtoHook.getPagination(0, 20)
-    }, [])
+    const productQuery = useQuery({
+        queryKey: ['products', page], queryFn: () =>
+            selectCategory !== '' ?
+                APIGetCategory(selectCategory, page, categoryUrl) :
+                APIGetPagination(page, baseUrl), keepPreviousData: true
+    })
+
+    const categoriesQuery = useQuery({
+        queryKey: ['categories'], queryFn: () => APIGet(categoriesUrl)
+    })
+
+    const search = async () => {
+        setLoading(true)
+        try {
+            const { data, status } = await APIGetSearch(searchText, searchUrl)
+            if (status !== 200) {
+                setSearchResult(null)
+                return;
+            }
+
+            setSearchResult(data as ISimpleProduto[])
+        } catch (error) {
+            setSearchResult([])
+        }
+        setLoading(false)
+    }
+
+    const chooseCategory = (id: string) => {
+        setPage(0)
+        setSelectCategory(id)
+    }
+
+    if (productQuery.isLoading || loading || categoriesQuery.isLoading) {
+        return <Loading />
+    }
 
     return (
         <section className={styles.Center}>
             <div className={styles.SearchBar}>
-                <input type="text" placeholder='Search..' onChange={(e) => produtoHook.search(e.target.value)} />
-                <FiSearch />
+                <input type="text" placeholder='Search..' onChange={(e) => setSearchText(e.target.value)} />
+                <FiSearch onClick={search} />
             </div>
             <div className={styles.Shop}>
                 <div className={styles.Categories}>
-                    {Object.entries(categories).map((item) => {
-                        return <ul key={item[0]} >
-                            <li className={styles.Title}>{item[0]}</li>
-                            {item[1].map((item) => (
-                                <li key={item} className={styles.Subtitle}>{item}</li>
-                            ))}
-                        </ul>
-                    })}
+                    <h3>Categories</h3>
+                    <ul>
+                        {(categoriesQuery.data?.data as ICategoriaProduto[]).map((category) => (
+                            <li
+                                key={category.idcategoriaproduto}
+                                onClick={() => chooseCategory(category.idcategoriaproduto as string)}
+                            >{category.nome}</li>
+                        ))}
+                    </ul>
                 </div>
                 <div className={styles.Products}>
+                    {searchResult?.length === 0 && <h1>No results found.</h1>}
                     {
-                        produtoHook.produtos.map((item, index) => {
+                        (productQuery.data?.data as ISimpleProduto[]).map((item, index) => {
                             if (index % 2 === 0) {
                                 return <Link to={`/product/${item.idproduto}`} key={item.idproduto}>
                                     <div className={styles.FullProduct} style={{ backgroundImage: `url("${item.foto}")` }}>
@@ -56,7 +89,7 @@ export const Shop = () => {
 
                                         <div className={styles.NormalDesc}>
                                             <h4>{item.nome}</h4>
-                                            <p>{item.categoriaproduto && 'No category'}</p>
+                                            <p>{item.categoriaproduto?.nome}</p>
                                             <strong>${item.valor}</strong>
                                         </div>
                                     </div>
@@ -67,12 +100,12 @@ export const Shop = () => {
                                 <div className={styles.Product}>
                                     <div className={styles.ProductImage} style={{ backgroundImage: `url("${item.foto}")` }}>
                                         <div className={styles.OverDesc}>
-                                            <blockquote>Interview - WWhat it's like to work remotely in big-sized product development?</blockquote>
+                                            <blockquote>{item.descricao}</blockquote>
                                         </div>
                                     </div>
-                                    <h4>Woon Time</h4>
-                                    <p>Men's watch</p>
-                                    <strong>$1600</strong>
+                                    <h4>{item.nome}</h4>
+                                    <p>{item.categoriaproduto?.nome}</p>
+                                    <strong>${item.valor}</strong>
                                 </div>
                             </Link>
                         })
@@ -80,8 +113,8 @@ export const Shop = () => {
                 </div>
             </div>
             <div className={styles.Navigation}>
-                {produtoHook.page === 1 ? <p></p> : <p onClick={() => produtoHook.changePage(produtoHook.page - 1)}><FiArrowLeft /> Previous</p>}
-                <p onClick={() => produtoHook.changePage(produtoHook.page + 1)}>Next <FiArrowRight /></p>
+                {page === 1 ? <p></p> : <p onClick={() => setPage(page - 1)}><FiArrowLeft /> Previous</p>}
+                {productQuery.data?.data.length === 20 && <p onClick={() => setPage(page + 1)}>Next <FiArrowRight /></p>}
             </div>
         </section >
     )

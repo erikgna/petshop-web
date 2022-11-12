@@ -5,7 +5,7 @@ import { ICliente } from '../interfaces/cliente'
 
 export function useCliente() {
     const [clientes, setClientes] = useState<ICliente[]>([])
-    const [clienteInput, setClienteInput] = useState<ICliente>({ cpf: '', nome: '', endereco: '', telefone: '' })
+    const [clienteInput, setClienteInput] = useState<ICliente>({ email: '', firstname: '', lastname: '', telefone: '' })
     const [isLoading, setIsLoading] = useState<boolean>(false)
     const [pages, setPages] = useState<number[]>([])
     const [page, setPage] = useState<number>(1)
@@ -61,7 +61,7 @@ export function useCliente() {
         setIsLoading(true)
 
         try {
-            const result = await APIGetPagination(start, end, '/cliente')
+            const result = await APIGetPagination(start, '/cliente')
             if (result.status === 200) {
                 const data = result.data as ICliente[]
                 setClientes(data)
@@ -179,7 +179,7 @@ export function useCliente() {
         }
 
         const filtered = clientesTemp.filter((value) =>
-            value.nome.toLowerCase().includes(text.toLowerCase())
+            value.lastname.toLowerCase().includes(text.toLowerCase())
         )
 
         setClientes(filtered)

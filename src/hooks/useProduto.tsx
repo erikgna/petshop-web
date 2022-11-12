@@ -71,7 +71,7 @@ export function useProduto() {
         setIsLoading(true)
 
         try {
-            const result = await APIGetPagination(start, end, '/produto')
+            const result = await APIGetPagination(start, '/produto')
             if (result.status === 200) {
                 const data = result.data as IProduto[]
                 setProdutos(data)

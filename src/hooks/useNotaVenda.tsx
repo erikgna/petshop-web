@@ -5,22 +5,11 @@ import { APIReportNotaVenda } from '../api/reports'
 import { randomRGBColor } from '../global/utils/Color'
 import { formatDateFromBack } from '../global/utils/DataFormat'
 
-import { INotaVenda, INotaVendaInfo } from '../interfaces/notaVenda'
-
-export const defaultNotaVenda: INotaVenda = {
-    idnotavenda: undefined,
-    idproduto: undefined,
-    idservico: undefined,
-    idcliente: undefined,
-    idfuncionario: undefined,
-    valor: 0,
-    quantidade: 0,
-    data: undefined
-}
+import { INotaVenda } from '../interfaces/notaVenda'
 
 export function useNotaVenda() {
     const [notaVendas, setNotaVendas] = useState<INotaVenda[]>([])
-    const [notaVendaInput, setNotaVendaInput] = useState<INotaVenda>(defaultNotaVenda)
+    const [notaVendaInput, setNotaVendaInput] = useState<INotaVenda>()
     const [isLoading, setIsLoading] = useState<boolean>(false)
     const [pages, setPages] = useState<number[]>([])
     const [page, setPage] = useState<number>(1)
@@ -30,81 +19,6 @@ export function useNotaVenda() {
     const [dataInicio, setDataInicio] = useState<string>("0")
     const [dataFim, setDataFim] = useState<string>("0")
     const [reportData, setReportData] = useState<any>()
-
-    async function generateNotaVendaReport(inicio?: string, fim?: string) {
-        setIsLoading(true)
-
-        try {
-            let result;
-            if (inicio === undefined || fim === undefined) {
-                result = await APIReportNotaVenda(dataInicio, dataFim)
-            }
-            else {
-                result = await APIReportNotaVenda(inicio, fim)
-            }
-
-            if (result.status !== 200) { return }
-            const data = result.data as INotaVendaInfo[]
-            const labels: string[] = []
-            let datas: any;
-            let dataset: any;
-            const nomes: string[] = []
-
-            data.forEach((item) => {
-                const date = formatDateFromBack(item.data as string)
-                const index = labels.indexOf(date)
-
-                if (index === -1) {
-                    labels.push(date)
-                }
-                if (nomes.indexOf(item.nome) === -1) {
-                    nomes.push(item.nome)
-                    dataset = { ...dataset, [item.nome]: [] }
-                }
-                datas = { ...datas, [item.data!]: [] }
-            })
-
-            data.forEach((item) => {
-                datas[item.data!].push({
-                    nome: item.nome,
-                    valor: item.valor_total,
-                })
-            })
-
-            nomes.forEach((nome) => {
-                Object.entries(datas).forEach((item: any, index: any) => {
-                    item[1].forEach((valor: any) => {
-                        if (valor.nome === nome) {
-                            dataset[nome].push(valor.valor)
-                        }
-                    })
-                    if (dataset[nome].length !== index + 1) {
-                        dataset[nome].push(0)
-                    }
-                })
-            })
-
-            const final: any[] = []
-            nomes.forEach((nome) => {
-                final.push({
-                    label: nome,
-                    data: dataset[nome].map((valor: number) => valor),
-                    borderColor: `rgb(${randomRGBColor()?.r}, ${randomRGBColor()?.g}, ${randomRGBColor()?.b})`,
-                })
-            })
-
-            setReportData({
-                labels,
-                datasets: final
-            })
-
-
-        } catch (error) {
-            console.error(error)
-        }
-
-        setIsLoading(false)
-    }
 
     async function get() {
         setIsLoading(true)
@@ -156,45 +70,12 @@ export function useNotaVenda() {
         setIsLoading(true)
 
         try {
-            const result = await APIGetPagination(start, end, '/nota-venda')
+            const result = await APIGetPagination(start, '/nota-venda')
             if (result.status === 200) {
                 const data = result.data as INotaVenda[]
                 setNotaVendas(data)
                 setNotaVendasTemp(data)
             }
-        } catch (error) {
-            console.error(error)
-        }
-
-        setIsLoading(false)
-    }
-
-    async function create(event: React.FormEvent<HTMLFormElement>) {
-        event.preventDefault()
-        setIsLoading(true)
-
-        try {
-            const result = await APICreate(notaVendaInput, '/nota-venda')
-            if (result.status !== 200) return;
-
-            setNotaVendas([result.data, ...notaVendas,])
-        } catch (error) {
-            console.error(error)
-        }
-
-        setIsLoading(false)
-    }
-
-    async function update(event: React.FormEvent<HTMLFormElement>) {
-        event.preventDefault()
-        setIsLoading(true)
-
-        try {
-            const result = await APIUpdate(notaVendaInput, '/nota-venda')
-            if (result.status !== 200) return;
-
-            const index = notaVendas.findIndex((value) => value.idnotavenda == notaVendaInput.idnotavenda)
-            notaVendas[index] = notaVendaInput
         } catch (error) {
             console.error(error)
         }
@@ -266,19 +147,6 @@ export function useNotaVenda() {
         }
     }
 
-    function search(text: string) {
-        if (text === '') {
-            setNotaVendas(notaVendasTemp)
-            return
-        }
-
-        const filtered = notaVendasTemp.filter((value) =>
-            value.valor.toString().toLowerCase().includes(text.toLowerCase())
-        )
-
-        setNotaVendas(filtered)
-    }
-
     return {
         notaVendas,
         notaVendaInput,
@@ -291,16 +159,12 @@ export function useNotaVenda() {
         dataInicio,
         setDataFim,
         setDataInicio,
-        generateNotaVendaReport,
-        search,
         changePage,
         changeSelection,
         checkAll,
         get,
         getOne,
         getPagination,
-        create,
-        update,
         deleteOne,
         deleteAll,
         setNotaVendaInput

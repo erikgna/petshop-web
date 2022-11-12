@@ -2,14 +2,12 @@ import { useEffect } from 'react'
 import { useParams } from 'react-router'
 
 import { useProduto } from '../../hooks/useProduto'
-import { useFornecedor } from '../../hooks/useFornecedor'
 import { useCategoriaProduto } from '../../hooks/useCategoriaProduto'
 
 import styles from '../../global/styles/NewEditDashboard.module.scss'
 
 export const ProdutoDashboard = () => {
     const produtoHook = useProduto()
-    const fornecedorHook = useFornecedor()
     const categoriasProdutoHook = useCategoriaProduto()
     const { id } = useParams();
 
@@ -17,7 +15,6 @@ export const ProdutoDashboard = () => {
         if (id !== 'new') {
             produtoHook.getOne(id)
         }
-        fornecedorHook.get()
         categoriasProdutoHook.get()
     }, [])
 

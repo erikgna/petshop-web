@@ -1,144 +1,186 @@
+import { FirebaseError } from 'firebase/app'
 import {
     getAuth,
     signInWithEmailAndPassword,
-    User,
     GoogleAuthProvider,
     signInWithPopup,
     signOut as firebaseSignOut,
     createUserWithEmailAndPassword,
     sendEmailVerification,
     sendPasswordResetEmail,
-    updateProfile,
+    User,
+    onAuthStateChanged,
+    deleteUser
 } from 'firebase/auth'
-import React, { useState, createContext, PropsWithChildren, ReactNode } from 'react'
+import { useState, createContext, useEffect } from 'react'
+import { useNavigate } from 'react-router'
+import { APICreate } from '../api'
 
-import { IAuthContext } from '../interfaces/auth'
+import { AuthError } from '../errors/AuthError'
+import { AuthContextProps, IAuthContext } from '../interfaces/auth'
+import { ICliente } from '../interfaces/cliente'
 
-type AuthContextProps = {
-    children: ReactNode
-}
+const unknownError = "An unknown error has ocurred."
 
 export const AuthContext = createContext<IAuthContext>(null!)
 
 export const AuthContextCmpnt = ({ children }: AuthContextProps) => {
     const [loading, setLoading] = useState<boolean>(false)
+    const [error, setError] = useState<string | null>(null)
+    const [user, setUser] = useState<User | null>(sessionStorage.getItem('user') ? JSON.parse(sessionStorage.getItem('user')!) as User : null)
+
+    const auth = getAuth()
+    useEffect(() => {
+        onAuthStateChanged(auth, (user) => {
+            const sessionUser = sessionStorage.getItem('user');
+            if (user && sessionUser === null) {
+                sessionStorage.setItem('user', JSON.stringify(user))
+                setUser(user)
+            }
+        })
+    }, [])
+
+    const navigate = useNavigate()
 
     const signUp = async (
+        firstName: string,
+        lastName: string,
         email: string,
-        name: string,
         password: string,
+        confirmPassword: string,
     ) => {
-        console.log('dasdas')
-        // try {
-        //     setLoading(true)
+        setLoading(true)
+        setError(null)
+        try {
+            if (firstName === '' || lastName === '' || email === '' || password === '' || confirmPassword === '') {
+                throw new AuthError("Fill all the fields.")
+            }
+            if (password.length < 8) {
+                throw new AuthError("Password length.")
+            }
+            if (password !== confirmPassword) {
+                throw new AuthError("Passwords doesn't match.")
+            }
 
-        //     const auth = getAuth()
-        //     const userCredential = await createUserWithEmailAndPassword(
-        //         auth,
-        //         email,
-        //         password
-        //     )
-        //     await sendEmailVerification(userCredential.user)
+            const userCredential = await createUserWithEmailAndPassword(
+                auth,
+                email,
+                password
+            )
 
-        //     if (auth.currentUser) {
-        //         updateProfile(auth.currentUser, {
-        //             displayName: name
-        //         }).then(async () => {
+            const data: ICliente = {
+                idcliente: userCredential.user.uid,
+                firstname: firstName,
+                lastname: lastName,
+                email
+            }
 
-        //         })
-        //     }
+            const result = await APICreate(data, '/cliente')
+            if (result.status !== 200) {
+                throw new AuthError("Couldn't save your name.")
+            }
 
-        //     setLoading(false)
-
-        //     callback()
-        // } catch (error) {
-
-        //     setLoading(false)
-        // }
+            await sendEmailVerification(userCredential.user)
+        } catch (err) {
+            if (err instanceof AuthError) {
+                setError(err.message)
+            } if (err instanceof FirebaseError) {
+                if (err.code === 'auth/email-already-in-use') {
+                    setError("Email already in use.")
+                }
+            }
+            else {
+                setError(unknownError)
+            }
+        }
+        setLoading(false)
     }
 
     const signIn = async (
         email: string,
         password: string
     ) => {
-        console.log('dasdas')
-        // try {
-        //     setLoading(true)
+        setLoading(true)
+        setError(null)
+        try {
+            if (email === '' || password === '') {
+                throw new AuthError("Fill all the fields.")
+            }
 
-        //     const auth = getAuth()
-        //     const userCredential = await signInWithEmailAndPassword(
-        //         auth,
-        //         email,
-        //         password
-        //     )
-        //     if (userCredential.user !== null) {
-        //         setLoading(false)
+            if (!auth.currentUser?.emailVerified) {
+                throw new AuthError("Verify your email.")
+            }
+            const credentials = await signInWithEmailAndPassword(
+                auth,
+                email,
+                password
+            )
 
-        //         callback()
-        //     }
-        // } catch (error) {
-        //     setLoading(false)
-        // }
+            navigate('/shop')
+        } catch (err) {
+            if (err instanceof AuthError) {
+                setError(err.message)
+            } else {
+                setError(unknownError)
+            }
+        }
+        setLoading(false)
     }
 
-    // const signWithGoogle = async (callback: VoidFunction) => {
-    //   try {
-    //     setLoading(true)
-    //     const auth = getAuth()
-    //     const provider = new GoogleAuthProvider()
-    //     auth.useDeviceLanguage()
-    //     const result = await signInWithPopup(auth, provider)
-    //     if (result.user !== null) {
-    //       setUser(result.user)
-    //       writeSessionStorage<User>(result.user, 'user')
-    //     }
+    const signWithGoogle = async () => {
+        setLoading(true)
+        setError(null)
+        try {
+            const provider = new GoogleAuthProvider()
+            auth.useDeviceLanguage()
+            await signInWithPopup(auth, provider)
 
-    //     const token = result.user as unknown as IToken
-    //     const status = await payments.getStatus(token.stsTokenManager.accessToken)
-    //     if (status?.status !== "AUTHORIZED") {
-    //       await payments.registerOrEdit(null, token.stsTokenManager.accessToken)
-    //     }
+            navigate('/shop')
+        } catch (error) {
+            setError(unknownError)
+        }
+        setLoading(false)
+    }
 
-    //     const tempCustomer = await payments.getCustomer(token.stsTokenManager.accessToken)
-    //     setCustomer(tempCustomer)
-    //     writeSessionStorage(tempCustomer, 'customer')
+    const signOut = async () => {
+        await firebaseSignOut(auth)
+    }
 
-    //     setLoading(false)
+    const recoverPassword = async (email: string) => {
+        setError(null)
+        try {
+            await sendPasswordResetEmail(auth, email)
+        } catch (error) {
+            setError(unknownError)
+        }
+    }
 
-    //     callback()
-    //   } catch (error) {
-    //     setError(true)
-    //     setLoading(false)
-    //   }
-    // }
+    const deleteAccount = async () => {
+        try {
+            if (auth.currentUser) {
+                deleteUser(auth.currentUser).then(() => {
+                    sessionStorage.removeItem('user')
+                    setUser(null)
+                    navigate('/')
+                })
+            }
+            await firebaseSignOut(auth)
+        } catch (error) {
+            console.error(error)
+            setError("Couldn't delete you user.")
+        }
+    }
 
-    // const signOut = async () => {
-    //   try {
-    //     const auth = getAuth()
-    //     await firebaseSignOut(auth)
-    //     writeSessionStorage(null, 'user')
-    //     setUser(null)
-    //   } catch (error) {
-    //     setError(true)
-    //   }
-    // }
-
-    // const recoverPassword = async (email: string) => {
-    //   try {
-    //     const auth = getAuth()
-    //     await sendPasswordResetEmail(auth, email)
-    //   } catch (error) {
-    //     setError(true)
-    //   }
-    // }
     const initState: IAuthContext = {
         signUp,
         signIn,
-        //   signWithGoogle,
-        //   signOut,
-        //   recoverPassword,
-        //   updateUser,
-        loading
+        signWithGoogle,
+        signOut,
+        recoverPassword,
+        deleteAccount,
+        loading,
+        error,
+        user
     }
 
     return (

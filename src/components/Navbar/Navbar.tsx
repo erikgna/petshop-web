@@ -4,10 +4,13 @@ import { AiOutlineMenu, AiFillCloseCircle } from 'react-icons/ai'
 import { IoIosArrowDown } from 'react-icons/io'
 
 import styles from './Navbar.module.scss'
-import { useState } from 'react'
+import { useState, useContext } from 'react'
+import { AuthContext } from '../../contexts/Auth'
 
 export const Navbar = () => {
     const [showMenu, setShowMenu] = useState<boolean>(false)
+
+    const { user } = useContext(AuthContext)
 
     return (
         <nav className={styles.Navbar}>
@@ -43,9 +46,14 @@ export const Navbar = () => {
                         <p>0</p>
                     </div>
                 </Link>
-                <Link to='/auth'>
-                    <button className='ButtonPrimary'>Login</button>
-                </Link>
+                {user ?
+                    <Link to='/profile'>
+                        <button className='ButtonPrimary'>Profile</button>
+                    </Link> :
+                    <Link to='/auth'>
+                        <button className='ButtonPrimary'>Login</button>
+                    </Link>
+                }
             </div>
             <div className={styles.MobileMenu} style={{ display: showMenu ? 'flex' : 'none' }}>
                 <Link to='/'>Home</Link>
