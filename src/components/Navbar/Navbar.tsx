@@ -6,12 +6,23 @@ import { IoIosArrowDown } from 'react-icons/io'
 import styles from './Navbar.module.scss'
 import { useState, useContext } from 'react'
 import { AuthContext } from '../../contexts/Auth'
+import { useQuery } from '@tanstack/react-query'
+import { APIGet } from '../../api'
+import { Loading } from '../Loading/Loading'
+import { ICategoriaProduto } from '../../interfaces/categoriaProduto'
 
 export const Navbar = () => {
     const [showMenu, setShowMenu] = useState<boolean>(false)
 
     const { user, cart } = useContext(AuthContext)
 
+    const { data, isLoading } = useQuery({ queryKey: ['categories'], queryFn: () => APIGet('/categoria-produto') })
+
+    if (isLoading) {
+        return <Loading />
+    }
+
+    const categories = data?.data as ICategoriaProduto[]
     return (
         <nav className={styles.Navbar}>
             <h1>MyPetShop</h1>
@@ -22,9 +33,9 @@ export const Navbar = () => {
                 <li className={styles.Dropdown}>
                     <p>Category <IoIosArrowDown /></p>
                     <div>
-                        <Link to='/ola'>Dog</Link>
-                        <Link to='/ola'>Cat</Link>
-                        <Link to='/ola'>Small Pets</Link>
+                        {categories.map((item) => (
+                            <Link key={item.idcategoriaproduto} to={`/shop/${item.idcategoriaproduto}`}>{item.nome}</Link>
+                        ))}
                     </div>
                 </li>
                 <li>

@@ -1,3 +1,4 @@
+import { IAddress } from "./address";
 import { ICartProduto } from "./produto";
 
 export interface ICart {
@@ -11,4 +12,6 @@ export interface ICart {
   subtotal: number;
   discount: number;
   delivery: number;
+  address_addressTocart_idbillingaddress: IAddress;
+  address_addressTocart_iddeliveryaddress: IAddress;
 }

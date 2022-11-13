@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { FiArrowLeft, FiArrowRight, FiSearch } from 'react-icons/fi'
-import { Link } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 
 import { APIGet, APIGetCategory, APIGetPagination, APIGetSearch } from '../../api'
 import { Loading } from '../../components/Loading/Loading'
@@ -16,6 +16,8 @@ const baseUrl = '/produto/page'
 const categoriesUrl = '/categoria-produto'
 
 export const Shop = () => {
+    const { id } = useParams()
+
     const [page, setPage] = useState<number>(1)
     const [searchText, setSearchText] = useState<string>('')
     const [searchResult, setSearchResult] = useState<ISimpleProduto[] | null>(null)
@@ -53,6 +55,13 @@ export const Shop = () => {
         setPage(0)
         setSelectCategory(id)
     }
+
+    useEffect(() => {
+        if (id) {
+            setSelectCategory(id)
+        }
+    }, [])
+
 
     if (productQuery.isLoading || loading || categoriesQuery.isLoading) {
         return <Loading />
