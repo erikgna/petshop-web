@@ -1,20 +1,18 @@
-import React from 'react'
-
 import styles from './Modal.module.scss'
 
 interface IModalProps {
     title: string;
-    description: string;
+    content: JSX.Element;
     confirm: () => void;
     cancel: () => void;
 }
 
-export const Modal = ({ title, description, confirm, cancel }: IModalProps) => {
+export const Modal = ({ title, content, confirm, cancel }: IModalProps) => {
     return (
         <div className={styles.Modal}>
             <div className={styles.Content}>
                 <h2>{title}</h2>
-                <p>{description}</p>
+                {content}
                 <div>
                     <button onClick={() => cancel()}>Cancel</button>
                     <button onClick={confirm}>Confirm</button>

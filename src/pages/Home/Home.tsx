@@ -3,8 +3,11 @@ import { AiOutlineArrowLeft, AiOutlineArrowRight, AiOutlinePlus, AiOutlineMinus 
 import { IoIosArrowForward } from 'react-icons/io'
 import { BsFillCartFill } from 'react-icons/bs'
 import { Link } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
 
-import { useProduto } from '../../hooks/useProduto';
+import { APIGetPagination } from '../../api';
+import { Loading } from '../../components/Loading/Loading';
+import { ISimpleProduto } from '../../interfaces/produto';
 
 import styles from './Home.module.scss'
 
@@ -52,13 +55,15 @@ const categories = [
 ]
 
 export const Home = () => {
-  const produtoHook = useProduto()
-
   const [max, setMax] = useState<number>(window.innerWidth / 320)
   const [min, setMin] = useState<number>(1)
 
   const [maxMarcas, setMaxMarcas] = useState<number>(window.innerWidth / 150)
   const [minMarcas, setMinMarcas] = useState<number>(1)
+
+  const { data, isLoading } = useQuery({
+    queryKey: ['products'], queryFn: () => APIGetPagination(1, '/produto/page'), keepPreviousData: true
+  })
 
   const resize = () => {
     setMax(window.innerWidth / 320)
@@ -69,9 +74,9 @@ export const Home = () => {
     window.addEventListener("resize", resize)
   }, [])
 
-  useEffect(() => {
-    produtoHook.getPagination(0, 4)
-  }, [])
+  if (isLoading) {
+    return <Loading />
+  }
 
   return <div className={styles.Home}>
     <div className={styles.Banners}>
@@ -130,7 +135,7 @@ export const Home = () => {
       <div>
         <h4>Best Seller Product</h4>
         <div className={styles.Products}>
-          {produtoHook.produtos.map((item) => (
+          {(data?.data as ISimpleProduto[]).map((item) => (
             <div className={styles.ProductCard} key={item.idproduto}>
               <img src={item.foto} className={styles.ProductImage} />
               <h6>{item.nome}</h6>

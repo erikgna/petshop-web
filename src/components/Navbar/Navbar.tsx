@@ -10,7 +10,7 @@ import { AuthContext } from '../../contexts/Auth'
 export const Navbar = () => {
     const [showMenu, setShowMenu] = useState<boolean>(false)
 
-    const { user } = useContext(AuthContext)
+    const { user, cart } = useContext(AuthContext)
 
     return (
         <nav className={styles.Navbar}>
@@ -43,7 +43,7 @@ export const Navbar = () => {
                 <Link to='/cart'>
                     <div className="cart">
                         <BsFillCartFill />
-                        <p>0</p>
+                        <p>{cart?.produtos.length}</p>
                     </div>
                 </Link>
                 {user ?

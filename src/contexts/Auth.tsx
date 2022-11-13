@@ -14,11 +14,13 @@ import {
 } from 'firebase/auth'
 import { useState, createContext, useEffect } from 'react'
 import { useNavigate } from 'react-router'
-import { APICreate } from '../api'
+import { APICreate, APIGetOne, APIUpdate } from '../api'
 
 import { AuthError } from '../errors/AuthError'
 import { AuthContextProps, IAuthContext } from '../interfaces/auth'
+import { ICart } from '../interfaces/cart'
 import { ICliente } from '../interfaces/cliente'
+import { ICartProduto, IProduto } from '../interfaces/produto'
 
 const unknownError = "An unknown error has ocurred."
 
@@ -28,8 +30,16 @@ export const AuthContextCmpnt = ({ children }: AuthContextProps) => {
     const [loading, setLoading] = useState<boolean>(false)
     const [error, setError] = useState<string | null>(null)
     const [user, setUser] = useState<User | null>(sessionStorage.getItem('user') ? JSON.parse(sessionStorage.getItem('user')!) as User : null)
+    const [cart, setCart] = useState<ICart | null>(null)
 
     const auth = getAuth()
+
+    const fetchCart = async (uid: string) => {
+        const { data, status } = await APIGetOne(uid, '/cart')
+        if (status === 200)
+            setCart(data as ICart)
+    }
+
     useEffect(() => {
         onAuthStateChanged(auth, (user) => {
             const sessionUser = sessionStorage.getItem('user');
@@ -37,6 +47,7 @@ export const AuthContextCmpnt = ({ children }: AuthContextProps) => {
                 sessionStorage.setItem('user', JSON.stringify(user))
                 setUser(user)
             }
+            if (user) fetchCart(user.uid)
         })
     }, [])
 
@@ -171,6 +182,35 @@ export const AuthContextCmpnt = ({ children }: AuthContextProps) => {
         }
     }
 
+    const addToCart = async (product: ICartProduto | null) => {
+        try {
+            if (!product) return
+            if (cart?.produtos.find((val) => val.idproduto === product.idproduto) !== undefined) return
+            product.quantity = 1;
+            const tempCart = { ...cart, produtos: [...cart?.produtos as ICartProduto[], product] } as ICart
+            tempCart.subtotal = tempCart.subtotal + product.valor
+            tempCart.total = tempCart.total + product.valor - tempCart.delivery
+            tempCart.delivery = 0
+
+            setCart(tempCart)
+
+            await APIUpdate(tempCart, `/cart`)
+        } catch (error) {
+            console.error(error)
+        }
+    }
+
+    const removeFromCart = async (productID: string, quantity: number, amount: number) => {
+        const tempCart = { ...cart, produtos: cart?.produtos.filter((val) => val.idproduto !== productID) } as ICart
+        tempCart.subtotal = tempCart.subtotal - (quantity * amount)
+        tempCart.total = tempCart.total - (quantity * amount) - tempCart.delivery
+        tempCart.delivery = 0
+
+        setCart(tempCart)
+
+        await APIUpdate(tempCart, `/cart`)
+    }
+
     const initState: IAuthContext = {
         signUp,
         signIn,
@@ -178,9 +218,13 @@ export const AuthContextCmpnt = ({ children }: AuthContextProps) => {
         signOut,
         recoverPassword,
         deleteAccount,
+        addToCart,
+        removeFromCart,
+        setCart,
         loading,
         error,
-        user
+        user,
+        cart
     }
 
     return (

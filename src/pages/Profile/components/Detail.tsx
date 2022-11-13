@@ -91,7 +91,7 @@ export const Detail = ({ feedback, setLoading, setFeedback }: DetailProps) => {
                 {feedback !== '' && <p>{feedback}</p>}
                 <button className='ButtonPrimary' onClick={saveProfile}>Save</button>
             </form>
-            {modal && <Modal title='Confirm delete' description='Are you sure that you want to delete you account?' cancel={cancel} confirm={confirm} />}
+            {modal && <Modal title='Confirm delete' content={<p>Are you sure that you want to delete you account?</p>} cancel={cancel} confirm={confirm} />}
             <p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.</p>
             <button className='ButtonPrimary' onClick={() => { setModal(true) }}>Delete account</button>
         </div>

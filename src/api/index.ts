@@ -4,6 +4,7 @@ import { IProduto } from "../interfaces/produto";
 import { INotaVenda } from "../interfaces/notaVenda";
 import { ICliente } from "../interfaces/cliente";
 import { IAddress } from "../interfaces/address";
+import { ICart } from "../interfaces/cart";
 
 const api: AxiosInstance = axios.create({
   baseURL: "http://localhost:8030/api/v1",
@@ -31,12 +32,12 @@ export const APIUserGetPagination = (
 ) => api.get(`${route}/${id}/${start}/${end}`);
 
 export const APICreate = (
-  object: IProduto | ICliente | INotaVenda | IAddress,
+  object: IProduto | ICliente | INotaVenda | IAddress | ICart,
   route: string
 ) => api.post(`${route}`, object);
 
 export const APIUpdate = (
-  object: IProduto | ICliente | INotaVenda | IAddress,
+  object: IProduto | ICliente | INotaVenda | IAddress | ICart,
   route: string
 ) => api.patch(`${route}`, object);
 
