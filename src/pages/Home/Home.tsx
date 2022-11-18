@@ -83,7 +83,7 @@ export const Home = () => {
       <div className={styles.BannerLetter}>
         <h2>We have everything your pet need.</h2>
         <p>The care you give all the difference for lifelong health and happines.</p>
-        <button className="ButtonPrimary">Shop Now</button>
+        <Link to='/shop'><button className="ButtonPrimary">Shop Now</button></Link>
       </div>
     </div>
 
@@ -127,7 +127,7 @@ export const Home = () => {
       <div className={styles.BannerSeller}>
         <div className="img"></div>
         <h3>We have the best quality<br />pet food</h3>
-        <Link to="/">
+        <Link to="/shop">
           Show All
           <IoIosArrowForward />
         </Link>
@@ -153,9 +153,10 @@ export const Home = () => {
             </div>
           ))}
         </div>
-        <button className="ButtonPrimary">
+        <Link to='/shop'><button className="ButtonPrimary">
           More Products
         </button>
+        </Link>
       </div>
     </div>
 

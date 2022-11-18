@@ -54,7 +54,7 @@ export const Navbar = () => {
                 <Link to='/cart'>
                     <div className="cart">
                         <BsFillCartFill />
-                        <p>{cart?.produtos.length}</p>
+                        <p>{cart?.produtos.length ? cart?.produtos.length : 0}</p>
                     </div>
                 </Link>
                 {user ?
