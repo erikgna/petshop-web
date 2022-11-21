@@ -1,35 +1,62 @@
-import { AiFillHeart } from 'react-icons/ai'
+import { useContext } from 'react'
+import { useQuery } from '@tanstack/react-query'
 import { FiBookmark } from 'react-icons/fi'
-import { Link } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
+
+import { APIGetOne, APIUpdate } from '../../api'
+import { Loading } from '../../components/Loading/Loading'
+import { AuthContext } from '../../contexts/Auth'
+import { formatDateFromBack } from '../../global/utils/DataFormat'
+import { IPostCategories } from '../../interfaces/post'
 
 import styles from './Post.module.scss'
+import { BsFillBookmarkFill } from 'react-icons/bs'
+import { ICliente } from '../../interfaces/cliente'
 
 export const Post = () => {
+    const { id } = useParams()
+
+    const { cliente, setCliente } = useContext(AuthContext)
+
+    const postQuery = useQuery({
+        queryKey: ['post'], queryFn: () => APIGetOne(id as string, '/post')
+    })
+
+    if (postQuery.isLoading) {
+        return <Loading />
+    }
+
+    const post = postQuery.data?.data as { post: IPostCategories, similiarPosts: IPostCategories[] }
     return (
         <section className={styles.PostSection}>
             <div className={styles.PostContent}>
-                <h1>Create a Lorem Ipsum Generator in JavaScript</h1>
-                <img src="https://miro.medium.com/max/720/1*1AktzTtx2ZOH1kb8yv7Piw.jpeg" alt="" />
-                <p>
-                    Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.
-                    <br />
-                    <br />
-                    The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from "de Finibus Bonorum et Malorum" by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.
-                </p>
-                <img src="https://miro.medium.com/max/640/1*1c16SHuSwzJTYQQJ_NelSg.gif" alt="" />
+                <h1>{post.post.title}</h1>
+                <img src={post.post.foto} alt="Post banner" />
+                <p>{post.post.description}</p>
 
                 <div className={styles.Icons}>
-                    <AiFillHeart />
-                    <FiBookmark />
+                    {cliente?.savedposts?.indexOf(post.post.idpost) === -1 ?
+                        <FiBookmark onClick={async () => {
+                            cliente?.savedposts?.push(post.post.idpost)
+                            await APIUpdate(cliente!, `/cliente`)
+
+                            setCliente({ ...cliente, savedposts: cliente.savedposts })
+                        }} /> : <BsFillBookmarkFill onClick={async () => {
+                            const updatedCliente = { ...cliente, savedposts: cliente?.savedposts?.filter((val) => val !== post.post.idpost) } as ICliente
+                            await APIUpdate(updatedCliente, `/cliente`)
+
+                            setCliente(updatedCliente)
+                        }} />
+                    }
                 </div>
             </div>
             <div>
-                {[1, 2, 3, 4, 5, 6].map((item) => (
-                    <div key={item} className={styles.Post}>
+                {post.similiarPosts.map((item) => (
+                    <div key={item.idpost} className={styles.Post}>
                         <div>
-                            <p><strong>Product . </strong>July 24, 2020</p>
-                            <Link key={item} to={`/post/${item}`}><h3>Interview - WWhat it's like to work remotely in big-sized product development?</h3></Link>
-                            <p>In this project, we are going to create an Lorem Ipsum generator with JavaScript. Lorem Ipsum is the dummy text, used by almost all developers to show in place of data in their project. We are going to use a variance of it called Hipster Ipsum.</p>
+                            <p><strong>{item.categoriapost.name} . </strong>{formatDateFromBack(item.date.toString())}</p>
+                            <Link to={`/post/${item.idpost}`}><h3>{item.title}</h3></Link>
+                            <p>{item.description}</p>
                             <div className={styles.Profile}>
                                 <img src="https://static.diverseui.com/male-1.jpg" alt="" />
                                 <div>
@@ -38,7 +65,7 @@ export const Post = () => {
                                 </div>
                             </div>
                         </div>
-                        <img className={styles.PostImage} src="https://miro.medium.com/max/720/1*1AktzTtx2ZOH1kb8yv7Piw.jpeg" />
+                        <img className={styles.PostImage} src={item.foto} />
                     </div>
                 ))}
             </div>

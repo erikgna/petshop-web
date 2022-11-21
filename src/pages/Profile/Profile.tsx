@@ -6,21 +6,18 @@ import { Detail } from './components/Detail'
 import { Address } from './components/Address'
 import { Orders } from './components/Orders'
 import { Payment } from './components/Payment'
+import { SavedPosts } from './components/SavedPosts'
 
 type IMenuShow = {
     detail: boolean,
     address: boolean,
     order: boolean,
-    payment: boolean
+    payment: boolean,
+    posts: boolean
 }
 
 export const Profile = () => {
-    const [toShow, setToShow] = useState<IMenuShow>({
-        detail: true,
-        address: false,
-        order: false,
-        payment: false
-    })
+    const [toShow, setToShow] = useState<string>()
 
     const [feedback, setFeedback] = useState<string>('')
     const [loading, setLoading] = useState<boolean>(false)
@@ -32,36 +29,18 @@ export const Profile = () => {
     return (
         <section className={styles.Profile}>
             <div className={styles.Menu}>
-                <p onClick={() => setToShow({
-                    detail: true,
-                    address: false,
-                    order: false,
-                    payment: false
-                })}>Details</p>
-                <p onClick={() => setToShow({
-                    detail: false,
-                    address: true,
-                    order: false,
-                    payment: false
-                })}>Address</p>
-                <p onClick={() => setToShow({
-                    detail: false,
-                    address: false,
-                    order: true,
-                    payment: false
-                })}>Orders</p>
-                <p onClick={() => setToShow({
-                    detail: false,
-                    address: false,
-                    order: false,
-                    payment: true
-                })}>Payment Methods</p>
+                <p onClick={() => setToShow('details')}>Details</p>
+                <p onClick={() => setToShow('address')}>Address</p>
+                <p onClick={() => setToShow('orders')}>Orders</p>
+                <p onClick={() => setToShow('payments')}>Payment Methods</p>
+                <p onClick={() => setToShow('posts')}>Saved Posts</p>
             </div>
 
-            {toShow.detail && <Detail feedback={feedback} setLoading={setLoading} setFeedback={setFeedback} />}
-            {toShow.address && <Address feedback={feedback} setLoading={setLoading} setFeedback={setFeedback} />}
-            {toShow.order && <Orders />}
-            {toShow.payment && <Payment feedback={feedback} setLoading={setLoading} setFeedback={setFeedback} />}
+            {toShow === 'details' && <Detail feedback={feedback} setLoading={setLoading} setFeedback={setFeedback} />}
+            {toShow === 'addess' && <Address feedback={feedback} setLoading={setLoading} setFeedback={setFeedback} />}
+            {toShow === 'orders' && <Orders />}
+            {toShow === 'payments' && <Payment feedback={feedback} setLoading={setLoading} setFeedback={setFeedback} />}
+            {toShow === 'posts' && <SavedPosts />}
         </section>
     )
 }

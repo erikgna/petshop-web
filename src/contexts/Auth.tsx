@@ -31,23 +31,30 @@ export const AuthContextCmpnt = ({ children }: AuthContextProps) => {
     const [error, setError] = useState<string | null>(null)
     const [user, setUser] = useState<User | null>(sessionStorage.getItem('user') ? JSON.parse(sessionStorage.getItem('user')!) as User : null)
     const [cart, setCart] = useState<ICart | null>(null)
+    const [cliente, setCliente] = useState<ICliente | null>(null)
 
     const auth = getAuth()
 
-    const fetchCart = async (uid: string) => {
-        const { data, status } = await APIGetOne(uid, '/cart')
-        if (status === 200)
-            setCart(data as ICart)
+    // const fetchCart = async (uid: string) => {
+    //     const { data, status } = await APIGetOne(uid, '/cart')
+    //     if (status === 200)
+    //         setCart(data as ICart)
+    // }
+
+    const fetchCliente = async (uid: string) => {
+        const { data } = await APIGetOne(uid, '/cliente')
+        setCliente(data)
     }
 
     useEffect(() => {
         onAuthStateChanged(auth, (user) => {
-            const sessionUser = sessionStorage.getItem('user');
-            if (user && sessionUser === null) {
-                sessionStorage.setItem('user', JSON.stringify(user))
-                setUser(user)
-            }
-            if (user) fetchCart(user.uid)
+            // const sessionUser = sessionStorage.getItem('user');
+            // if (user && sessionUser === null) {
+            //     sessionStorage.setItem('user', JSON.stringify(user))
+            //     setUser(user)
+            // }
+            // if (user) fetchCart(user.uid)
+            if (user) fetchCliente(user.uid)
         })
     }, [])
 
@@ -221,10 +228,12 @@ export const AuthContextCmpnt = ({ children }: AuthContextProps) => {
         addToCart,
         removeFromCart,
         setCart,
+        setCliente,
         loading,
         error,
         user,
-        cart
+        cart,
+        cliente
     }
 
     return (

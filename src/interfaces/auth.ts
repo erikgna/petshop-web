@@ -1,6 +1,7 @@
 import { User } from "firebase/auth";
 import { ReactNode } from "react";
 import { ICart } from "./cart";
+import { ICliente } from "./cliente";
 import { ICartProduto } from "./produto";
 
 export type AuthContextProps = {
@@ -21,14 +22,16 @@ export interface IAuthContext {
   recoverPassword: (email: string) => Promise<void>;
   deleteAccount: () => Promise<void>;
   addToCart: (product: ICartProduto | null) => Promise<void>;
+  setCart: React.Dispatch<React.SetStateAction<ICart | null>>;
+  setCliente: React.Dispatch<React.SetStateAction<ICliente | null>>;
   removeFromCart: (
     productID: string,
     quantity: number,
     amount: number
   ) => Promise<void>;
-  setCart: React.Dispatch<React.SetStateAction<ICart | null>>;
   loading: boolean;
   error: string | null;
   user: User | null;
   cart?: ICart | null;
+  cliente: ICliente | null;
 }

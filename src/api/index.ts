@@ -41,6 +41,9 @@ export const APIUpdate = (
   route: string
 ) => api.patch(`${route}`, object);
 
+export const APIUpdateClientPost = (object: { id: string }, route: string) =>
+  api.patch(`${route}`, object);
+
 export const APIDelete = (id: string, route: string) =>
   api.delete(`${route}/${id}`);
 
